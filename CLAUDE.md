@@ -119,6 +119,23 @@ Each category has: slug, custom system prompt, difficulty labels, default exerci
 | General Knowledge | `general-knowledge` | multiple_choice, true_false, matching |
 | Word Puzzles | `word-puzzles` | word_search, matching, sentence_reorder |
 
+## Marketing & SEO
+
+> Source: deep research (solopreneur/3-opportunities/bookforge/research.md)
+
+**Naming:** "BookForge" is taken (bookforge.app, bookforge.co). Must rename to **WorkbookAI** or **LessonPress** before marketing push.
+
+**SEO keywords (low competition, high intent):**
+- "AI workbook generator" — landing page title
+- "KDP workbook creator" — main category
+- "ESL workbook generator" — teacher audience
+- "CEFR workbook maker" — niche differentiator
+- "AI worksheet generator" — already in metadata
+
+**Key competitors:** BookBolt ($19.99/mo, templates only), BookAutoAI ($35-100/mo, prose not exercises), Royalty Profits AI ($27-37 one-time, low quality). **None specialize in AI educational workbooks.**
+
+**Pricing plan:** Free (1 book/mo, watermark) → Pro $19/mo → Lifetime $99
+
 ## Key Decisions
 
 - **OpenAI structured output** — `z.discriminatedUnion("type", [...])` maps to JSON Schema `anyOf`. Each of 9 exercise types has its own typed schema. Uses `client.beta.chat.completions.parse()` with `zodResponseFormat()`.

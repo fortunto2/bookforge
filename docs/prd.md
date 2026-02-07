@@ -3,17 +3,20 @@ type: opportunity
 status: draft
 title: "Bookforge — PRD"
 created: 2026-02-07
-updated: 2026-02-07
+updated: 2026-02-08
 tags: [bookforge, prd, nextjs-supabase]
 opportunity_score: 7.5
-evidence_sources: 5
+evidence_sources: 15
 related:
+  - 3-opportunities/bookforge/research.md
   - 1-methodology/stacks/nextjs-supabase.yaml
   - 1-methodology/dev-principles.md
   - 0-principles/manifest.md
 ---
 
 # Bookforge — Product Requirements Document
+
+> **Naming conflict:** "BookForge" is taken — bookforge.app (AI writing app), bookforge.co (kids activity books), bookforge.co.uk (writers group). **Must rename before launch.** Top candidates: **WorkbookAI** (.com likely available, immediately descriptive) or **LessonPress** (brandable, implies education + publishing). See research.md section 4.
 
 ## Problem
 
@@ -41,12 +44,22 @@ Creating quality English learning workbooks for Amazon KDP is time-consuming (we
 
 ### Competitive Analysis
 
-| Competitor | Approach | Gap |
-|-----------|----------|-----|
-| Canva | Generic templates, manual content | No AI content generation, not KDP-optimized |
-| Book Bolt | KDP research + low-content books | No AI-generated pedagogical content |
-| Designrr | Ebook creation from blogs/URLs | Not designed for workbooks/exercises |
-| ChatGPT + manual | AI text → manual formatting | No integrated PDF, no exercise templates |
+> Source: deep research — 8 competitors mapped, none specialize in AI educational workbooks
+
+| Competitor | URL | Pricing | Key Features | Gap |
+|-----------|-----|---------|-------------|-----|
+| BookBolt | bookbolt.io | $9.99-$19.99/mo | KDP research, cover/interior designer, PuzzleWiz, 1200+ templates | No AI content, no pedagogical structure, puzzle-focused |
+| Self Publishing Titans | selfpublishingtitans.com | Free-$44/mo | Chrome extension, keyword research, puzzle/coloring makers | Generic low-content only, no AI generation |
+| BookAutoAI | bookautoai.com | $35-$100/mo | Full nonfiction book generation (100+ pages), auto-format | Nonfiction prose, not workbooks/exercises |
+| Royalty Profits AI | royalprofitsai.com | $27-$37 one-time | 25+ book types in under 6 min | Low quality AI, not specialized for education |
+| BooksGenie AI | booksgenie.ai | Subscription | Crossword, Sudoku, WordSearch, Mazes, coloring pages | Puzzle-only, no educational content |
+| A Book Creator | abookcreator.com | $15.99/mo | Low content book platform, AI descriptions | Generic templates, no exercise generation |
+| Canva | canva.com | Free/$12.99/mo | Huge template library, book interiors | Not KDP-optimized, no AI content |
+| ChatGPT + manual | — | $20/mo | AI text generation | No integrated PDF, no exercise templates, manual formatting |
+
+### Our Advantage
+
+**No competitor combines AI content generation + pedagogical structure (CEFR levels) + KDP-ready export.** All tools are either generic KDP template editors (BookBolt) or generic AI text generators (BookAutoAI). BookForge is the only tool generating structured educational exercises.
 
 ---
 
@@ -143,6 +156,48 @@ Full reference: `1-methodology/dev-principles.md`
 - Speed over perfection.** Ship, learn, iterate. The market teaches faster than planning.
 
 Full reference: `0-principles/manifest.md`
+
+---
+
+## Marketing & SEO Strategy
+
+### Primary Keywords (low competition, commercial intent)
+
+| Keyword | Competition | Priority |
+|---------|-----------|----------|
+| AI workbook generator | low | P0 — landing page title |
+| English workbook maker KDP | low | P0 — H1 variant |
+| KDP workbook creator | medium | P0 — main category |
+| ESL workbook generator | low | P0 — teacher audience |
+| CEFR workbook maker | low | P1 — niche differentiator |
+| grammar workbook creator online | low | P1 — long-tail |
+| create English learning book KDP | medium | P1 — how-to content |
+| AI worksheet generator | medium | P0 — already in metadata |
+| printable worksheets PDF | medium | P1 — informational |
+
+### Content Strategy
+
+1. **Landing page** — target "AI workbook generator" + "KDP workbook creator". Show before/after: weeks of manual work vs 30 seconds.
+2. **Blog / SEO pages** — "How to create English workbooks for Amazon KDP", "Best exercise types for ESL workbooks", "CEFR levels explained for KDP publishers"
+3. **YouTube** — screen recordings of book generation process. KDP community watches YouTube for tool reviews.
+4. **Reddit** — r/KDP, r/selfpublish, r/teachingresources. Answer formatting questions, mention tool.
+5. **Product Hunt** — launch day. No direct competitor has "AI + educational workbook" positioning.
+
+### Competitor SEO Gap
+
+BookBolt dominates "KDP book creator" (100+ blog posts, affiliate network). **Nobody targets education-specific keywords.** "English workbook generator" and "CEFR workbook creator" are open — first mover wins.
+
+---
+
+## Pricing Strategy
+
+| Tier | Price | Includes | Competitor reference |
+|------|-------|----------|---------------------|
+| Free | $0 | 1 book/month, watermark, 3 exercise types | Canva free tier, BookBolt free trial |
+| Pro | $19/mo | Unlimited books, all exercise types, no watermark | BookBolt Pro ($19.99/mo), below BookAutoAI ($35/mo) |
+| Lifetime | $99 one-time | Everything in Pro, forever | Royalty Profits AI ($27-37), Tangent Templates ($59) |
+
+**Launch strategy:** Free tier (current) → collect emails → ProductHunt launch → offer $49 lifetime (early bird) → raise to $99.
 
 ---
 
@@ -243,12 +298,17 @@ const GeneratedBook = z.object({
 
 ## Launch Checklist
 
-- [ ] MVP features complete
+- [x] MVP features complete (12 categories, PDF export, Vercel Blob)
+- [ ] **Rename project** (WorkbookAI / LessonPress) — register domain
 - [ ] Tests passing
-- [ ] Deployed to vercel | cloudflare_pages
-- [ ] Landing page live
-- [ ] Analytics tracking
-- [ ] First 5 users onboarded
+- [x] Deployed to Vercel (bookforge-iota.vercel.app)
+- [ ] Landing page SEO (target: "AI workbook generator", "KDP workbook creator")
+- [ ] SEO blog: "How to create English workbooks for KDP"
+- [ ] Analytics (PostHog)
+- [ ] Product Hunt draft
+- [ ] Reddit r/KDP intro post
+- [ ] Pricing page (Free / Pro $19/mo / Lifetime $99)
+- [ ] First 5 users onboarded (free tier)
 
 ---
 

@@ -2,9 +2,45 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BookForge — AI Workbook Generator",
+  title: {
+    default:
+      "Free AI Worksheet & Workbook Generator — Math, English, Science PDF | BookForge",
+    template: "%s | BookForge",
+  },
   description:
-    "Generate print-ready educational workbooks for Amazon KDP in minutes. 12 categories: English, Math, Science, Languages, and more.",
+    "Free AI-powered worksheet generator. Create printable PDF workbooks in seconds — Math, English Grammar, Spanish, Science, Kids Activities, SAT Prep & more. KDP-ready.",
+  keywords: [
+    "AI worksheet generator",
+    "AI workbook generator",
+    "workbook creator online",
+    "PDF worksheet generator",
+    "KDP workbook generator",
+    "KDP workbook creator",
+    "free worksheet maker",
+    "printable worksheets PDF",
+    "math worksheet generator",
+    "English grammar worksheets",
+    "ESL worksheet creator",
+    "ESL workbook generator",
+    "CEFR workbook maker",
+    "English workbook maker KDP",
+    "grammar workbook creator online",
+    "create English learning book KDP",
+  ],
+  openGraph: {
+    title: "BookForge — Free AI Worksheet & Workbook Generator",
+    description:
+      "Create printable PDF workbooks in seconds. 12 categories: Math, English, Science, Spanish, Kids, SAT Prep & more.",
+    type: "website",
+    url: "https://bookforge-iota.vercel.app",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BookForge — Free AI Worksheet & Workbook Generator",
+    description:
+      "Create printable PDF workbooks in seconds. Math, English, Science, Spanish, Kids, SAT Prep & more.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
