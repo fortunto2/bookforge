@@ -1,22 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import {
   BookConfig,
   type BookConfig as BookConfigType,
-  type GeneratedBook,
   BOOK_TYPE_LABELS,
   CEFR_LABELS,
   EXERCISE_TYPE_LABELS,
   ExerciseType,
 } from "@/lib/schemas/book";
+import type { BookMeta } from "@/lib/storage";
 
 export default function Home() {
   const [generating, setGenerating] = useState(false);
-  const [book, setBook] = useState<GeneratedBook | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [books, setBooks] = useState<BookMeta[]>([]);
 
   const {
     register,
@@ -37,10 +38,16 @@ export default function Home() {
     },
   });
 
+  useEffect(() => {
+    fetch("/api/books")
+      .then((r) => r.json())
+      .then(setBooks)
+      .catch(() => {});
+  }, []);
+
   async function onSubmit(data: BookConfigType) {
     setGenerating(true);
     setError(null);
-    setBook(null);
 
     try {
       const res = await fetch("/api/generate", {
@@ -54,11 +61,20 @@ export default function Home() {
         throw new Error(err.error || "Generation failed");
       }
 
-      const generatedBook = await res.json();
-      setBook(generatedBook);
+      const result = await res.json();
+
+      if (result.id) {
+        window.location.href = `/preview/${result.id}`;
+      } else {
+        // Fallback: sessionStorage if blob storage unavailable
+        sessionStorage.setItem(
+          "bookforge:book",
+          JSON.stringify({ config: result.config, sections: result.sections }),
+        );
+        window.location.href = "/preview";
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
       setGenerating(false);
     }
   }
@@ -95,7 +111,9 @@ export default function Home() {
             className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
           />
           {errors.authorName && (
-            <p className="mt-1 text-sm text-[var(--destructive)]">{errors.authorName.message}</p>
+            <p className="mt-1 text-sm text-[var(--destructive)]">
+              {errors.authorName.message}
+            </p>
           )}
         </div>
 
@@ -216,41 +234,36 @@ export default function Home() {
         )}
       </form>
 
-      {/* Result */}
-      {book && (
-        <div className="mt-10 rounded-lg border border-[var(--border)] p-6">
-          <h2 className="mb-2 text-xl font-bold">Book Generated!</h2>
-          <p className="mb-4 text-sm text-[var(--muted-foreground)]">
-            {book.sections.length} sections,{" "}
-            {book.sections.reduce((sum, s) => sum + s.exercises.length, 0)} exercises
-          </p>
-
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => {
-                sessionStorage.setItem("bookforge:book", JSON.stringify(book));
-                window.location.href = "/preview";
-              }}
-              className="rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] hover:opacity-90"
-            >
-              Preview & Download PDF
-            </button>
-          </div>
-
-          {/* Sections summary */}
-          <div className="mt-6 space-y-3">
-            {book.sections.map((section, i) => (
-              <div key={i} className="rounded border border-[var(--border)] p-3">
-                <h3 className="font-medium">{section.title}</h3>
-                <p className="text-sm text-[var(--muted-foreground)]">
-                  {section.exercises.length} exercises:{" "}
-                  {section.exercises.map((e) => EXERCISE_TYPE_LABELS[e.type]).join(", ")}
-                </p>
-              </div>
+      {/* Generated Books List */}
+      {books.length > 0 && (
+        <section className="mt-16">
+          <h2 className="mb-4 text-xl font-bold">Generated Books</h2>
+          <div className="space-y-3">
+            {books.map((b) => (
+              <Link
+                key={b.id}
+                href={`/preview/${b.id}`}
+                className="block rounded-lg border border-[var(--border)] p-4 transition-colors hover:bg-[var(--accent)]"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="font-medium">{b.title}</h3>
+                    <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                      {b.level} | {b.topic} | {b.sectionCount} sections,{" "}
+                      {b.exerciseCount} exercises
+                    </p>
+                    <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
+                      by {b.authorName}
+                    </p>
+                  </div>
+                  <time className="shrink-0 text-xs text-[var(--muted-foreground)]">
+                    {new Date(b.createdAt).toLocaleDateString()}
+                  </time>
+                </div>
+              </Link>
             ))}
           </div>
-        </div>
+        </section>
       )}
     </main>
   );
