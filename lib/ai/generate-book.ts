@@ -1,5 +1,6 @@
 // AICODE-NOTE: Uses OpenAI structured output with Zod schemas.
 // Each section is generated separately to stay within token limits.
+// Content field is JSON string because OpenAI structured output doesn't support z.any().
 
 import OpenAI from "openai";
 import { zodResponseFormat } from "openai/helpers/zod";
@@ -7,13 +8,14 @@ import { z } from "zod";
 import type { BookConfig, BookSection, ExerciseType } from "@/lib/schemas/book";
 
 // AICODE-NOTE: Lazy init — OpenAI client throws at import time if OPENAI_API_KEY is missing.
-// Deferring to function call prevents build-time errors.
 function getClient() {
   return new OpenAI();
 }
 
 const MODEL = process.env.OPENAI_MODEL || "gpt-4o";
 
+// AICODE-NOTE: content is a JSON string because OpenAI structured output
+// requires concrete types — z.any() is not allowed. We parse it after receiving.
 const GeneratedSectionSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -22,7 +24,11 @@ const GeneratedSectionSchema = z.object({
       type: z.string(),
       title: z.string(),
       instructions: z.string(),
-      content: z.any(),
+      content_json: z
+        .string()
+        .describe(
+          "Exercise content as a JSON string. Structure depends on exercise type.",
+        ),
     }),
   ),
 });
@@ -44,15 +50,37 @@ Guidelines:
 - Include clear instructions for each exercise
 - Provide correct answers for all exercises
 - Vary exercise difficulty within the level range
-- For fill_in_blank: provide sentences with one word removed, store the answer in "blank"
-- For multiple_choice: always provide exactly 4 options with correctIndex (0-3)
-- For matching: provide 5-8 pairs to match
-- For true_false: provide clear statements that are unambiguously true or false
-- For sentence_reorder: provide 4-6 word scrambled sentences
-- For error_correction: provide sentences with one grammatical error
-- For reading_passage: write a 100-200 word passage with 3-5 comprehension questions
-- For short_answer: provide open-ended questions requiring 1-2 sentence answers
-- For word_search: provide 8-12 vocabulary words related to the topic`;
+
+IMPORTANT: The "content_json" field must be a valid JSON string (not an object).
+
+Exercise content_json structures by type:
+
+fill_in_blank:
+  {"sentences": [{"text": "I ___ to the store yesterday.", "blank": "went", "hint": "past tense of go"}]}
+
+multiple_choice:
+  {"questions": [{"question": "What is the past tense of 'go'?", "options": ["goed", "went", "gone", "going"], "correctIndex": 1}]}
+
+matching:
+  {"pairs": [{"left": "happy", "right": "glad"}, {"left": "sad", "right": "unhappy"}]}
+
+true_false:
+  {"statements": [{"statement": "The sun rises in the east.", "isTrue": true}]}
+
+sentence_reorder:
+  {"sentences": [{"scrambled": ["yesterday", "I", "store", "went", "the", "to"], "correct": "I went to the store yesterday."}]}
+
+error_correction:
+  {"sentences": [{"incorrect": "He go to school every day.", "correct": "He goes to school every day.", "errorType": "subject-verb agreement"}]}
+
+reading_passage:
+  {"passage": "Text here...", "questions": [{"question": "What is the main idea?", "answer": "The main idea is..."}]}
+
+short_answer:
+  {"questions": [{"question": "Describe your favorite holiday.", "sampleAnswer": "My favorite holiday is..."}]}
+
+word_search:
+  {"words": ["travel", "journey", "adventure", "explore"]}`;
 }
 
 function buildSectionPrompt(
@@ -64,8 +92,8 @@ function buildSectionPrompt(
   return `Generate section ${sectionNumber} of ${totalSections}.
 Include 3-5 exercises using these types: ${types}.
 Make this section progressively harder than the previous one.
-Return a JSON object with title, description, and exercises array.
-Each exercise must have: type (use underscore format like "fill_in_blank"), title, instructions, and content matching the exercise type structure.`;
+Remember: content_json must be a valid JSON STRING, not an object. Use JSON.stringify format.
+Type field must use underscore format: fill_in_blank, multiple_choice, matching, true_false, sentence_reorder, error_correction, reading_passage, short_answer, word_search.`;
 }
 
 export async function generateBookContent(
@@ -84,13 +112,27 @@ export async function generateBookContent(
           content: buildSectionPrompt(i, sectionsCount, config.exerciseTypes),
         },
       ],
-      response_format: zodResponseFormat(GeneratedSectionSchema, "book_section"),
+      response_format: zodResponseFormat(
+        GeneratedSectionSchema,
+        "book_section",
+      ),
       temperature: 0.7,
     });
 
     const parsed = completion.choices[0].message.parsed;
     if (parsed) {
-      sections.push(parsed as BookSection);
+      // Parse content_json strings back into objects
+      const section: BookSection = {
+        title: parsed.title,
+        description: parsed.description,
+        exercises: parsed.exercises.map((ex) => ({
+          type: ex.type as ExerciseType,
+          title: ex.title,
+          instructions: ex.instructions,
+          content: JSON.parse(ex.content_json),
+        })),
+      };
+      sections.push(section);
     }
   }
 
