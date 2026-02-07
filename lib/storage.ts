@@ -12,6 +12,7 @@ export interface BookMeta {
   level: string;
   topic: string;
   bookType: string;
+  category?: string;
   sectionCount: number;
   exerciseCount: number;
   createdAt: string;
@@ -36,7 +37,7 @@ async function getIndex(): Promise<BookMeta[]> {
   }
 }
 
-export async function saveBook(book: GeneratedBook): Promise<BookMeta> {
+export async function saveBook(book: GeneratedBook, category?: string): Promise<BookMeta> {
   const id = crypto.randomUUID().slice(0, 8);
   const createdAt = new Date().toISOString();
 
@@ -55,6 +56,7 @@ export async function saveBook(book: GeneratedBook): Promise<BookMeta> {
     level: book.config.level,
     topic: book.config.topic,
     bookType: book.config.bookType,
+    category,
     sectionCount: book.sections.length,
     exerciseCount: book.sections.reduce(
       (sum, s) => sum + s.exercises.length,

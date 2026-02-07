@@ -2,19 +2,22 @@ import { NextResponse } from "next/server";
 import { BookConfig } from "@/lib/schemas/book";
 import { generateBookContent } from "@/lib/ai/generate-book";
 import { saveBook } from "@/lib/storage";
+import { getCategoryBySlug } from "@/lib/categories";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const config = BookConfig.parse(body);
-    const sections = await generateBookContent(config);
+    const categorySlug = body.category as string | undefined;
+
+    const category = categorySlug ? getCategoryBySlug(categorySlug) : undefined;
+    const sections = await generateBookContent(config, category?.systemPrompt);
 
     const book = { config, sections };
 
-    // Persist to Vercel Blob (non-blocking — generation still returns even if save fails)
     let id: string | null = null;
     try {
-      const meta = await saveBook(book);
+      const meta = await saveBook(book, categorySlug);
       id = meta.id;
     } catch (e) {
       console.error("Failed to save book to storage:", e);

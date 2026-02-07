@@ -142,29 +142,30 @@ const GeneratedSectionSchema = z.object({
 
 // --- Prompts ---
 
-function buildSystemPrompt(config: BookConfig): string {
-  return `You are an expert English language teacher and textbook author.
-You create high-quality educational exercises for English learners.
+function buildSystemPrompt(config: BookConfig, categoryPrompt?: string): string {
+  const base = categoryPrompt
+    ?? `You are an expert English language teacher and textbook author.
+You create high-quality educational exercises for English learners.`;
+
+  return `${base}
 
 Book details:
 - Type: ${config.bookType.replace("_", " ")}
-- CEFR Level: ${config.level}
+- Difficulty: ${config.level}
 - Topic/Theme: ${config.topic}
 - Target page count: ${config.pageCount} pages
 
-Guidelines:
-- Match difficulty precisely to CEFR level ${config.level}
+Exercise format rules:
 - Keep all content thematically connected to "${config.topic}"
-- Use natural, contemporary English
 - Include clear instructions for each exercise
 - Provide correct answers for all exercises
-- Vary exercise difficulty within the level range
+- Vary difficulty within the level range
 - For fill_in_blank: 5-8 sentences, use ___ in text where the blank word goes
 - For multiple_choice: 4-6 questions, always exactly 4 options, correctIndex 0-3
 - For matching: 5-8 pairs
 - For true_false: 5-8 statements
 - For sentence_reorder: 4-6 sentences with scrambled words
-- For error_correction: 4-6 sentences with one grammatical error each
+- For error_correction: 4-6 sentences with one error each
 - For reading_passage: 100-200 word passage with 3-5 questions
 - For short_answer: 4-6 open-ended questions
 - For word_search: 8-12 vocabulary words`;
@@ -205,6 +206,7 @@ function toBookSection(parsed: z.infer<typeof GeneratedSectionSchema>): BookSect
 
 export async function generateBookContent(
   config: BookConfig,
+  categoryPrompt?: string,
 ): Promise<BookSection[]> {
   const sectionsCount = Math.max(3, Math.floor(config.pageCount / 10));
   const sections: BookSection[] = [];
@@ -213,7 +215,7 @@ export async function generateBookContent(
     const completion = await getClient().beta.chat.completions.parse({
       model: MODEL,
       messages: [
-        { role: "system", content: buildSystemPrompt(config) },
+        { role: "system", content: buildSystemPrompt(config, categoryPrompt) },
         {
           role: "user",
           content: buildSectionPrompt(i, sectionsCount, config.exerciseTypes),
