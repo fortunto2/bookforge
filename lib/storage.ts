@@ -46,6 +46,7 @@ export async function saveBook(book: GeneratedBook, category?: string): Promise<
   await put(`books/${id}.json`, JSON.stringify(stored), {
     access: "public",
     addRandomSuffix: false,
+    allowOverwrite: true,
     contentType: "application/json",
   });
 
@@ -70,6 +71,7 @@ export async function saveBook(book: GeneratedBook, category?: string): Promise<
   await put(INDEX_PATH, JSON.stringify(currentIndex), {
     access: "public",
     addRandomSuffix: false,
+    allowOverwrite: true,
     contentType: "application/json",
   });
 

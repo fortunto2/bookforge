@@ -16,16 +16,14 @@ export async function POST(request: Request) {
     const book = { config, sections };
 
     let id: string | null = null;
-    let saveError: string | null = null;
     try {
       const meta = await saveBook(book, categorySlug);
       id = meta.id;
     } catch (e) {
-      saveError = e instanceof Error ? e.message : String(e);
       console.error("Failed to save book to storage:", e);
     }
 
-    return NextResponse.json({ id, config, sections, saveError });
+    return NextResponse.json({ id, config, sections });
   } catch (error) {
     if (error instanceof Error && error.name === "ZodError") {
       return NextResponse.json(
