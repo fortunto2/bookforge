@@ -10,6 +10,9 @@ export interface Category {
   name: string;
   description: string;
   icon: string;
+  seoTitle: string;
+  seoDescription: string;
+  h1: string;
   defaultBookType: string;
   defaultLevel: string;
   defaultExerciseTypes: ExerciseType[];
@@ -43,6 +46,9 @@ export const categories: Category[] = [
     description:
       "Grammar workbooks for ESL/EFL learners. Fill-in-the-blank, error correction, sentence reordering.",
     icon: "📝",
+    seoTitle: "Free English Grammar Worksheet Generator — Printable PDF Exercises",
+    seoDescription: "Generate printable English grammar worksheets PDF. ESL/EFL exercises: fill-in-the-blank, error correction, sentence reorder. CEFR A1-C2. Download free.",
+    h1: "English Grammar Worksheet Generator",
     defaultBookType: "grammar_workbook",
     defaultLevel: "A2",
     defaultExerciseTypes: ["fill_in_blank", "multiple_choice", "error_correction", "sentence_reorder"],
@@ -74,6 +80,9 @@ You create high-quality grammar exercises for English learners.
     description:
       "Vocabulary builders with word searches, matching, and contextual exercises.",
     icon: "📖",
+    seoTitle: "Free English Vocabulary Worksheet Generator — Word Search, Matching PDF",
+    seoDescription: "Create printable English vocabulary worksheets. Word searches, matching exercises, fill-in-the-blank. ESL vocabulary practice PDF for all CEFR levels.",
+    h1: "English Vocabulary Worksheet Generator",
     defaultBookType: "vocabulary_builder",
     defaultLevel: "A2",
     defaultExerciseTypes: ["fill_in_blank", "matching", "word_search", "multiple_choice"],
@@ -105,6 +114,9 @@ You create engaging vocabulary-building exercises for English learners.
     description:
       "Math drills: arithmetic, word problems, fractions, algebra. All grade levels.",
     icon: "🔢",
+    seoTitle: "Free Math Worksheet Generator — Printable Practice Problems PDF",
+    seoDescription: "Generate free printable math worksheets PDF. Addition, subtraction, multiplication, fractions, algebra, word problems. Grades 1-9. Download instantly.",
+    h1: "Math Worksheet Generator — Free Printable PDF",
     defaultBookType: "mixed_skills",
     defaultLevel: "A2",
     defaultExerciseTypes: ["fill_in_blank", "multiple_choice", "short_answer", "true_false"],
@@ -144,6 +156,9 @@ Generate math exercises appropriate for the difficulty level.
     description:
       "Science quizzes: biology, physics, chemistry, earth science. Fun facts and experiments.",
     icon: "🔬",
+    seoTitle: "Free Science Worksheet Generator — Biology, Physics, Chemistry PDF",
+    seoDescription: "Generate printable science worksheets PDF. Biology, physics, chemistry, earth science quizzes. Multiple choice, true/false, reading passages. All grade levels.",
+    h1: "Science Worksheet Generator — Quiz & Practice PDF",
     defaultBookType: "mixed_skills",
     defaultLevel: "B1",
     defaultExerciseTypes: ["multiple_choice", "true_false", "matching", "fill_in_blank", "reading_passage"],
@@ -177,6 +192,9 @@ Generate science exercises appropriate for the difficulty level.
     description:
       "Learn Spanish: vocabulary, grammar, common phrases. Beginner to intermediate.",
     icon: "🇪🇸",
+    seoTitle: "Free Spanish Worksheets for Beginners — Vocabulary & Grammar PDF",
+    seoDescription: "Generate free Spanish worksheets for beginners PDF. Vocabulary, grammar, matching, fill-in-the-blank. Learn Spanish with printable practice exercises.",
+    h1: "Spanish Worksheets for Beginners — Free PDF Generator",
     defaultBookType: "vocabulary_builder",
     defaultLevel: "A1",
     defaultExerciseTypes: ["fill_in_blank", "matching", "multiple_choice", "sentence_reorder"],
@@ -208,6 +226,9 @@ Generate Spanish learning exercises at the specified difficulty level.
     description:
       "Learn French: vocabulary, grammar, pronunciation tips. Beginner to intermediate.",
     icon: "🇫🇷",
+    seoTitle: "Free French Worksheets for Beginners — Vocabulary & Grammar PDF",
+    seoDescription: "Generate free French worksheets for beginners PDF. Vocabulary, grammar, matching, fill-in-the-blank. Learn French with printable practice exercises.",
+    h1: "French Worksheets for Beginners — Free PDF Generator",
     defaultBookType: "vocabulary_builder",
     defaultLevel: "A1",
     defaultExerciseTypes: ["fill_in_blank", "matching", "multiple_choice", "sentence_reorder"],
@@ -239,6 +260,9 @@ Generate French learning exercises at the specified difficulty level.
     description:
       "History quizzes: ancient civilizations, world wars, geography, famous figures.",
     icon: "🏛️",
+    seoTitle: "Free World History Worksheets — Quiz & Study Guide PDF",
+    seoDescription: "Generate printable world history worksheets PDF. Ancient civilizations, world wars, geography quizzes. Multiple choice, matching, reading passages. All levels.",
+    h1: "World History Worksheet Generator — Free Printable PDF",
     defaultBookType: "reading_comprehension",
     defaultLevel: "B1",
     defaultExerciseTypes: ["multiple_choice", "true_false", "matching", "reading_passage", "short_answer"],
@@ -272,6 +296,9 @@ Generate history exercises appropriate for the difficulty level.
     description:
       "Fun learning for ages 4-10: puzzles, word games, matching, basic skills.",
     icon: "🧒",
+    seoTitle: "Free Kids Activity Worksheets — Printable Puzzles & Games PDF",
+    seoDescription: "Generate free kids activity worksheets PDF. Fun puzzles, word games, matching for ages 4-10. Printable educational activities. Download instantly.",
+    h1: "Kids Activity Worksheet Generator — Free Printable PDF",
     defaultBookType: "mixed_skills",
     defaultLevel: "A1",
     defaultExerciseTypes: ["matching", "word_search", "fill_in_blank", "true_false", "multiple_choice"],
@@ -314,6 +341,9 @@ Generate engaging, age-appropriate exercises for kids.
     description:
       "Standardized test practice: reading, writing, math, reasoning skills.",
     icon: "🎓",
+    seoTitle: "Free SAT & GED Practice Worksheets — Test Prep PDF Generator",
+    seoDescription: "Generate free SAT, ACT, GED practice worksheets PDF. Reading comprehension, math, grammar, vocabulary. Printable test prep exercises. Download free.",
+    h1: "SAT & GED Practice Worksheet Generator — Free PDF",
     defaultBookType: "mixed_skills",
     defaultLevel: "B2",
     defaultExerciseTypes: ["multiple_choice", "reading_passage", "fill_in_blank", "short_answer", "error_correction"],
@@ -354,6 +384,9 @@ Generate rigorous, test-like exercises at the appropriate difficulty.
     description:
       "Professional vocabulary, email writing, meetings, presentations, negotiations.",
     icon: "💼",
+    seoTitle: "Free Business English Worksheets — Professional Vocabulary PDF",
+    seoDescription: "Generate free business English worksheets PDF. Professional vocabulary, email writing, meetings, presentations. Printable exercises for all CEFR levels.",
+    h1: "Business English Worksheet Generator — Free PDF",
     defaultBookType: "vocabulary_builder",
     defaultLevel: "B1",
     defaultExerciseTypes: ["fill_in_blank", "multiple_choice", "matching", "reading_passage", "short_answer"],
@@ -387,6 +420,9 @@ Generate business English exercises appropriate for the level.
     description:
       "Trivia workbooks: geography, culture, famous people, fun facts for all ages.",
     icon: "🌍",
+    seoTitle: "Free General Knowledge Quiz Worksheets — Trivia PDF Generator",
+    seoDescription: "Generate free general knowledge quiz worksheets PDF. Trivia, geography, science, history, culture. Printable quiz workbooks for all ages. Download free.",
+    h1: "General Knowledge Quiz Generator — Free Printable PDF",
     defaultBookType: "mixed_skills",
     defaultLevel: "B1",
     defaultExerciseTypes: ["multiple_choice", "true_false", "matching", "fill_in_blank", "short_answer"],
@@ -421,6 +457,9 @@ Generate engaging general knowledge exercises.
     description:
       "Word searches, scrambles, matching games. Perfect for all ages and classrooms.",
     icon: "🧩",
+    seoTitle: "Free Word Puzzle Worksheets — Word Search & Games PDF Generator",
+    seoDescription: "Generate free word puzzle worksheets PDF. Word searches, scrambles, matching games. Printable puzzles for kids, classrooms, and adults. Download instantly.",
+    h1: "Word Puzzle & Game Worksheet Generator — Free PDF",
     defaultBookType: "mixed_skills",
     defaultLevel: "A2",
     defaultExerciseTypes: ["word_search", "matching", "sentence_reorder", "fill_in_blank"],

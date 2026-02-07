@@ -91,7 +91,7 @@ export default function CategoryGenerator({ category }: { category: Category }) 
         <div className="flex items-center gap-3">
           <span className="text-4xl">{category.icon}</span>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{category.name}</h1>
+            <h1 className="text-3xl font-bold tracking-tight">{category.h1}</h1>
             <p className="mt-1 text-[var(--muted-foreground)]">{category.description}</p>
           </div>
         </div>
