@@ -226,12 +226,16 @@ export default function Home() {
           </p>
 
           <div className="flex gap-3">
-            <a
-              href={`/preview?book=${encodeURIComponent(JSON.stringify(book))}`}
+            <button
+              type="button"
+              onClick={() => {
+                sessionStorage.setItem("bookforge:book", JSON.stringify(book));
+                window.location.href = "/preview";
+              }}
               className="rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] hover:opacity-90"
             >
               Preview & Download PDF
-            </a>
+            </button>
           </div>
 
           {/* Sections summary */}

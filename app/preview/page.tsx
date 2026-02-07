@@ -1,7 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { Suspense, useMemo } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { GeneratedBook } from "@/lib/schemas/book";
@@ -17,18 +16,19 @@ const PDFPreview = dynamic(() => import("@/components/pdf-preview").then((m) => 
   ),
 });
 
-function PreviewContent() {
-  const searchParams = useSearchParams();
+export default function PreviewPage() {
+  const [book, setBook] = useState<GeneratedBook | null>(null);
 
-  const book = useMemo<GeneratedBook | null>(() => {
-    const raw = searchParams.get("book");
-    if (!raw) return null;
-    try {
-      return JSON.parse(decodeURIComponent(raw));
-    } catch {
-      return null;
+  useEffect(() => {
+    const raw = sessionStorage.getItem("bookforge:book");
+    if (raw) {
+      try {
+        setBook(JSON.parse(raw));
+      } catch {
+        // invalid data
+      }
     }
-  }, [searchParams]);
+  }, []);
 
   if (!book) {
     return (
@@ -63,17 +63,5 @@ function PreviewContent() {
         <PDFPreview book={book} />
       </div>
     </div>
-  );
-}
-
-export default function PreviewPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center">Loading...</div>
-      }
-    >
-      <PreviewContent />
-    </Suspense>
   );
 }
