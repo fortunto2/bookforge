@@ -23,9 +23,13 @@ next-env.d.ts
 # testing
 coverage/
 
+# generated PDFs
+output/
+
 # IDE
 .vscode/
 .idea/
 
 # vercel
 .vercel/
+.vercel

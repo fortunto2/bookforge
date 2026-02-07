@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "generate": "tsx --env-file=.env.local scripts/test-generate.ts",
+    "generate:dry": "tsx scripts/test-generate.ts --dry-run"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -39,6 +41,7 @@
     "jsdom": "^28.0.0",
     "prettier": "^3.4.0",
     "tailwindcss": "^4.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.0.0",
     "vitest": "^3.0.0"

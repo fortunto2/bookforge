@@ -48,7 +48,7 @@ export const FillInBlankContent = z.object({
     z.object({
       text: z.string(),
       blank: z.string(),
-      hint: z.string().optional(),
+      hint: z.string(),
     }),
   ),
 });
@@ -121,7 +121,7 @@ export const ShortAnswerContent = z.object({
 
 export const WordSearchContent = z.object({
   words: z.array(z.string()),
-  gridSize: z.number().int().min(8).max(20).default(12),
+  gridSize: z.number().int().min(8).max(20).optional(),
 });
 
 export const Exercise = z.object({
