@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // @react-pdf/renderer needs webpack config for browser PDF generation
+  turbopack: {
+    resolveAlias: {
+      canvas: { browser: "false" },
+    },
+  },
+  // @react-pdf/renderer is client-only — exclude from server bundling
+  serverExternalPackages: ["@react-pdf/renderer"],
   webpack: (config) => {
     config.resolve.alias.canvas = false;
     return config;

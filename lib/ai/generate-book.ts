@@ -6,7 +6,11 @@ import { zodResponseFormat } from "openai/helpers/zod";
 import { z } from "zod";
 import type { BookConfig, BookSection, ExerciseType } from "@/lib/schemas/book";
 
-const openai = new OpenAI();
+// AICODE-NOTE: Lazy init — OpenAI client throws at import time if OPENAI_API_KEY is missing.
+// Deferring to function call prevents build-time errors.
+function getClient() {
+  return new OpenAI();
+}
 
 const MODEL = process.env.OPENAI_MODEL || "gpt-4o";
 
@@ -71,7 +75,7 @@ export async function generateBookContent(
   const sections: BookSection[] = [];
 
   for (let i = 1; i <= sectionsCount; i++) {
-    const completion = await openai.chat.completions.parse({
+    const completion = await getClient().beta.chat.completions.parse({
       model: MODEL,
       messages: [
         { role: "system", content: buildSystemPrompt(config) },

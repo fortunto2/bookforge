@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { BookConfig, Exercise, CEFRLevel, BookType, ExerciseType } from "../book";
+import { BookConfig, CEFRLevel, BookType, ExerciseType } from "../book";
 
 describe("BookConfig schema", () => {
   it("accepts valid config", () => {

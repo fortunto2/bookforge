@@ -10,7 +10,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Font,
 } from "@react-pdf/renderer";
 import type { GeneratedBook, Exercise, BookSection, TrimSize } from "@/lib/schemas/book";
 import { EXERCISE_TYPE_LABELS } from "@/lib/schemas/book";
