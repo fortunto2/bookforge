@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { isStripeConfigured } from "@/lib/stripe";
+import { CheckoutButton } from "./checkout-button";
 
 export const metadata: Metadata = {
   title: "Pricing — Free AI Workbook Generator",
@@ -14,7 +16,7 @@ export const metadata: Metadata = {
 
 const PLANS = [
   {
-    name: "Free",
+    name: "Free" as const,
     price: "$0",
     period: "forever",
     description: "Try it out. No credit card required.",
@@ -26,11 +28,10 @@ const PLANS = [
       "Community support",
     ],
     cta: "Start Free",
-    href: "/#categories",
     highlight: false,
   },
   {
-    name: "Pro",
+    name: "Pro" as const,
     price: "$19",
     period: "/month",
     description: "For publishers and teachers who need volume.",
@@ -42,12 +43,11 @@ const PLANS = [
       "Priority generation",
       "Email support",
     ],
-    cta: "Coming Soon",
-    href: "#",
+    cta: "Get Pro",
     highlight: true,
   },
   {
-    name: "Lifetime",
+    name: "Lifetime" as const,
     price: "$99",
     period: "one-time",
     description: "Pay once, use forever. Best value.",
@@ -58,8 +58,7 @@ const PLANS = [
       "Early access to new categories",
       "Priority support",
     ],
-    cta: "Coming Soon",
-    href: "#",
+    cta: "Get Lifetime",
     highlight: false,
   },
 ];
@@ -83,11 +82,36 @@ const FAQ = [
   },
   {
     q: "What payment methods do you accept?",
-    a: "We'll accept all major credit cards and PayPal when paid plans launch. Currently everything is free during beta.",
+    a: "We accept all major credit cards via Stripe. Payments are secure and encrypted.",
   },
 ];
 
-export default function PricingPage() {
+function SuccessBanner() {
+  return (
+    <div className="mb-8 rounded-lg border border-green-300 bg-green-50 p-4 text-center text-sm text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-200">
+      Payment successful! Thank you for your purchase.
+    </div>
+  );
+}
+
+function CanceledBanner() {
+  return (
+    <div className="mb-8 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-center text-sm text-yellow-800 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">
+      Payment canceled. No charges were made.
+    </div>
+  );
+}
+
+export default async function PricingPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const success = params.success === "true";
+  const canceled = params.canceled === "true";
+  const stripeReady = isStripeConfigured();
+
   return (
     <main className="mx-auto max-w-5xl px-4 py-12">
       <header className="mb-12 text-center">
@@ -98,6 +122,9 @@ export default function PricingPage() {
           Start free. Upgrade when you need more.
         </p>
       </header>
+
+      {success && <SuccessBanner />}
+      {canceled && <CanceledBanner />}
 
       {/* Plans */}
       <div className="mb-20 grid gap-6 sm:grid-cols-3">
@@ -133,16 +160,35 @@ export default function PricingPage() {
                 </li>
               ))}
             </ul>
-            <Link
-              href={plan.href}
-              className={`mt-6 block rounded-lg py-2.5 text-center text-sm font-semibold transition-opacity hover:opacity-90 ${
-                plan.highlight
-                  ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
-                  : "border border-[var(--border)] hover:bg-[var(--accent)]"
-              }`}
-            >
-              {plan.cta}
-            </Link>
+            {plan.name === "Free" ? (
+              <Link
+                href="/#categories"
+                className="mt-6 block rounded-lg border border-[var(--border)] py-2.5 text-center text-sm font-semibold transition-opacity hover:bg-[var(--accent)] hover:opacity-90"
+              >
+                {plan.cta}
+              </Link>
+            ) : stripeReady ? (
+              <CheckoutButton
+                plan={plan.name === "Pro" ? "pro" : "lifetime"}
+                className={`mt-6 block cursor-pointer rounded-lg py-2.5 text-center text-sm font-semibold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 ${
+                  plan.highlight
+                    ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
+                    : "border border-[var(--border)] hover:bg-[var(--accent)]"
+                }`}
+              >
+                {plan.cta}
+              </CheckoutButton>
+            ) : (
+              <span
+                className={`mt-6 block cursor-not-allowed rounded-lg py-2.5 text-center text-sm font-semibold opacity-50 ${
+                  plan.highlight
+                    ? "bg-[var(--primary)] text-[var(--primary-foreground)]"
+                    : "border border-[var(--border)]"
+                }`}
+              >
+                Coming Soon
+              </span>
+            )}
           </div>
         ))}
       </div>
