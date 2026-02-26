@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/preview/"],
     },
-    sitemap: "https://bookforge-iota.vercel.app/sitemap.xml",
+    sitemap: "https://books.superduperai.co/sitemap.xml",
   };
 }

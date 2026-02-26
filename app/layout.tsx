@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bookforge-iota.vercel.app"),
+  metadataBase: new URL("https://books.superduperai.co"),
   title: {
     default:
       "Free AI Worksheet & Workbook Generator — Math, English, Science PDF | BookForge",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description:
       "Create printable PDF workbooks in seconds. 12 categories: Math, English, Science, Spanish, Kids, SAT Prep & more.",
     type: "website",
-    url: "https://bookforge-iota.vercel.app",
+    url: "https://books.superduperai.co",
   },
   twitter: {
     card: "summary_large_image",
@@ -42,6 +42,7 @@ export const metadata: Metadata = {
       "Create printable PDF workbooks in seconds. Math, English, Science, Spanish, Kids, SAT Prep & more.",
   },
   robots: { index: true, follow: true },
+  alternates: { canonical: "https://books.superduperai.co" },
 };
 
 const jsonLd = {
@@ -50,12 +51,12 @@ const jsonLd = {
     {
       "@type": "WebSite",
       name: "BookForge",
-      url: "https://bookforge-iota.vercel.app",
+      url: "https://books.superduperai.co",
       description:
         "Free AI-powered worksheet generator. Create printable PDF workbooks for Math, English, Science, and more.",
       potentialAction: {
         "@type": "SearchAction",
-        target: "https://bookforge-iota.vercel.app/c/{search_term}",
+        target: "https://books.superduperai.co/c/{search_term}",
         "query-input": "required name=search_term",
       },
     },
@@ -64,7 +65,7 @@ const jsonLd = {
       name: "BookForge",
       applicationCategory: "EducationalApplication",
       operatingSystem: "Web",
-      url: "https://bookforge-iota.vercel.app",
+      url: "https://books.superduperai.co",
       description:
         "AI-powered educational workbook generator. Create KDP-ready PDF workbooks with structured exercises.",
       offers: [

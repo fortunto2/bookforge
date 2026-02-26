@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { categories } from "@/lib/categories";
 
-const BASE_URL = "https://bookforge-iota.vercel.app";
+const BASE_URL = "https://books.superduperai.co";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const categoryPages = categories.map((cat) => ({
