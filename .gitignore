@@ -34,3 +34,4 @@ output/
 .vercel/
 .vercel
 .solo/
+.playwright-mcp/
