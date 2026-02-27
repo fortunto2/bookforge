@@ -1,4 +1,4 @@
-// AICODE-NOTE: These schemas are the source of truth for the entire app.
+// AI-NOTE: These schemas are the source of truth for the entire app.
 // AI generation, PDF rendering, and UI forms all derive from these types.
 
 import { z } from "zod";

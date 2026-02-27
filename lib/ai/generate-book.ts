@@ -1,4 +1,4 @@
-// AICODE-NOTE: Uses OpenAI structured output with Zod schemas.
+// AI-NOTE: Uses OpenAI structured output with Zod schemas.
 // Each section is generated separately to stay within token limits.
 // Exercise content uses z.discriminatedUnion on "type" field — maps to anyOf in JSON Schema.
 

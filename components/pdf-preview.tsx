@@ -1,6 +1,6 @@
 "use client";
 
-// AICODE-NOTE: This component is loaded dynamically with ssr:false from preview/page.tsx.
+// AI-NOTE: This component is loaded dynamically with ssr:false from preview/page.tsx.
 // All @react-pdf/renderer imports must stay in this file to avoid SSR bundling issues.
 
 import { Suspense } from "react";

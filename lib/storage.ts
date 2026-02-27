@@ -1,4 +1,4 @@
-// AICODE-NOTE: Vercel Blob storage for persisting generated books.
+// AI-NOTE: Vercel Blob storage for persisting generated books.
 // Each book is stored as books/{id}.json. A single _index.json tracks summaries.
 // Requires BLOB_READ_WRITE_TOKEN env var (Vercel Blob store).
 

@@ -1,4 +1,4 @@
-// AICODE-NOTE: KDP trim sizes and margins are critical for print-ready PDFs.
+// AI-NOTE: KDP trim sizes and margins are critical for print-ready PDFs.
 // 6x9 inch: margins 0.75" inside, 0.5" outside, 0.5" top/bottom
 // 8.5x11 inch: margins 0.75" inside, 0.5" outside, 0.625" top/bottom
 // "Inside" margin is the gutter (binding side), alternates per page.

@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { GeneratedBook } from "@/lib/schemas/book";
 
-// AICODE-NOTE: PDFPreview must be loaded with ssr:false because @react-pdf/renderer
+// AI-NOTE: PDFPreview must be loaded with ssr:false because @react-pdf/renderer
 // uses browser-only APIs. Dynamic import keeps it out of the SSR bundle entirely.
 const PDFPreview = dynamic(() => import("@/components/pdf-preview").then((m) => m.PDFPreview), {
   ssr: false,

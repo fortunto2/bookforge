@@ -1,4 +1,4 @@
-// AICODE-NOTE: Category catalog. Each category defines defaults, exercise types,
+// AI-NOTE: Category catalog. Each category defines defaults, exercise types,
 // suggested topics, and a custom system prompt that tells the AI how to generate
 // content for that specific subject. The exercise structure stays the same —
 // only the content theme changes per category.
